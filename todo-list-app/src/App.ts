@@ -6,6 +6,7 @@ import {
 } from "./components";
 import { _todo, todoStorage } from "./domain";
 import { Todo } from "./types/main";
+import { createDOMElement } from "./service";
 
 interface Props {
   $app: HTMLElement;
@@ -26,14 +27,14 @@ export default class App {
         title: "My App",
       },
       $parent: this.$app,
-      $element: document.createElement("header"),
+      $element: createDOMElement("header"),
       events: {},
     });
 
     new TodoForm({
       initialState: {},
       $parent: this.$app,
-      $element: document.createElement("form"),
+      $element: createDOMElement("form"),
       events: {
         onSubmit: text => this.handleSubmit(text),
       },
@@ -42,7 +43,9 @@ export default class App {
     this.todoList = new TodoList({
       initialState: this.state,
       $parent: this.$app,
-      $element: document.createElement("div"),
+      $element: createDOMElement("div", {
+        class: "todo-list",
+      }),
       events: {
         onToggle: id => this.handleToggle(id),
         onDelete: id => this.handleDelete(id),
@@ -52,7 +55,9 @@ export default class App {
     this.todoCount = new TodoCount({
       initialState: _todo.count(this.state),
       $parent: this.$app,
-      $element: document.createElement("div"),
+      $element: createDOMElement("div", {
+        class: "todo-count",
+      }),
       events: {},
     });
   }

@@ -1,4 +1,4 @@
-import _Storage from "../service/Storage";
+import { _Storage } from "../service";
 import { Todo } from "../types/main";
 
 const todoStorage = new _Storage<Todo[]>({
