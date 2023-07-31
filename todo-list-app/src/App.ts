@@ -24,7 +24,7 @@ export default class App {
 
     new Header({
       initialState: {
-        title: "My App",
+        title: "Todo List",
       },
       $parent: this.$app,
       $element: createDOMElement("header"),

@@ -8,8 +8,8 @@ export default class TodoCount extends Component<
   render(): void {
     const { totalCount, completedCount } = this.state;
     this.$element.innerHTML = `
-      <div>total: ${totalCount}</div>
-      <div>completed: ${completedCount}</div>
+      <div>Total: ${totalCount}</div>
+      <div>Completed: ${completedCount}</div>
     `;
   }
 }

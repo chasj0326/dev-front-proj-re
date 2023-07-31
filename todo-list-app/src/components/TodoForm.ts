@@ -10,8 +10,8 @@ export default class TodoForm extends Component<
 > {
   render(): void {
     this.$element.innerHTML = `
-      <input type="text"/>
-      <button>add</button>
+      <button><i class="fa-solid fa-plus"></i></button>
+      <input type="text" placeholder="새로운 할 일을 작성하세요."/>
     `;
   }
 

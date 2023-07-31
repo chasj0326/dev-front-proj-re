@@ -1,0 +1,167 @@
+
+@mixin position-setting($pos:static, $top:auto, $left:auto, $bottom:auto, $right:auto){
+  position: $pos;
+  top: $top;
+  left: $left;
+  bottom: $bottom;
+  right: $right;
+}
+
+@mixin size-setting($width:auto, $height:auto){
+  width: $width;
+  height: $height;
+}
+
+@mixin pretendard{
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+@mixin default-gradient($opacity: 1){
+  background-image: linear-gradient(135deg, rgba(233,38,226,$opacity) 0%, rgba(48,50,217,$opacity) 100%);
+}
+
+@mixin flex-setting($direction:row, $align:stretch, $justify:stretch){
+  display: flex;
+  flex-direction: $direction;
+  align-items: $align;
+  justify-content: $justify;
+}
+
+@mixin default-box(){
+  @include size-setting(100%, fit-content);
+  box-shadow: $default-box-shadow;
+  max-width: 860px;
+  background-color: #ffffff;
+  border-radius: 5px;
+}
+
+@mixin default-btn(){
+  @include size-setting(24px, 24px);
+  @include flex-setting(column, center, center);
+  border-radius: 12px;
+  border: none;
+}
+
+$default-box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 12px;
+$pink: rgba(233, 38, 226);
+$indigo: rgba(48,50,217);
+
+*{
+  @include pretendard();
+  box-sizing: border-box;
+}
+
+body{
+  @include default-gradient(0.8);
+  height: 100vh;
+}
+
+#app{
+  font-family: 'Pretendard-Variable';
+  @include position-setting(absolute, 0, 0, 100px, 0);
+  @include size-setting(fit-content, fit-content);
+  margin: auto;
+  padding: 40px;
+  width: 100%;
+  @include flex-setting(column, center, center);
+}
+
+
+header{
+  @include default-box();
+  @include flex-setting(null, null, null);
+  padding: 10px 20px;
+  border-radius: 5px 5px 0 0 ;
+  div{
+    font-size: 28px;
+    font-weight: 700;
+    @include default-gradient();
+    color: transparent;
+    -webkit-background-clip: text;
+  }
+}
+
+form{
+  @include default-box();
+  @include flex-setting(null, null, null);
+  padding: 20px;
+  border-radius: 0 0 5px 5px;
+  input{
+    @include size-setting(100%, 24px);
+    border: none;
+    outline: none;
+    line-height: 24px;
+    font-size: 20px;
+    font-weight: 600;
+    &::placeholder{
+      opacity: .5;
+    }
+  }
+  button{
+    @include default-btn();
+    margin-right: 16px;
+    color: white;
+    background-color: $pink;
+    opacity: .85;
+    box-shadow: $default-box-shadow;
+  }
+}
+
+.todo-list{
+  @include default-box();
+  padding: 0;
+  margin-top: 16px;
+  ul{
+    list-style: none;
+    padding: 0;
+    li{
+      position: relative;
+      @include flex-setting(row, center, flex-start);
+      padding: 10px 20px;
+      font-weight: 600;
+      input {
+        display: none;
+      }
+      input:checked + label{
+        background-color: $indigo;
+        opacity: .7;
+        color: #ffffff;
+        i{
+          display: block;
+          font-size: 14px;
+        }
+      }
+      label {
+        @include default-btn();
+        cursor: pointer;
+        border: .5px solid rgba(0, 0, 0, 0.25);
+        margin-right: 16px;
+        background-color: #ffffff;
+        i{
+          display: none;
+        }
+      }
+      button {
+        @include position-setting(absolute, null, null, null, 20px);
+        @include default-btn();
+        cursor: pointer;
+        color: white;
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+      span{
+        font-size: 20px;
+        color: #373141;
+        cursor: pointer;
+        &.completed{
+          opacity: .3;
+        }
+      }
+      &:hover{
+        background-color: #37314111;
+        button {
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+  }
+}

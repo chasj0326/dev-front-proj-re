@@ -19,9 +19,16 @@ export default class TodoList extends Component<
           <li data-id="${todo.id}" key="${todo.id}">
             <input type="checkbox" ${
               todo.completed && "checked"
-            } />
-            <span>${todo.text}</span>
-            <button type="button">delete</button>
+            } id="check-${todo.id}"/>
+            <label for="check-${todo.id}">
+              <i class="fa-solid fa-check"></i>
+            </label>
+            <span class="${
+              todo.completed ? "completed" : ""
+            }">${todo.text}</span>
+            <button type="button">
+              <i class="fa-solid fa-trash"></i>
+            </button>
           </li>
         `
         )
@@ -41,7 +48,10 @@ export default class TodoList extends Component<
         target.tagName === "SPAN"
       ) {
         id && this.events.onToggle(id);
-      } else if (target.tagName === "BUTTON") {
+      } else if (
+        target.tagName === "BUTTON" ||
+        target.parentElement?.tagName === "BUTTON"
+      ) {
         id && this.events.onDelete(id);
       }
     });
