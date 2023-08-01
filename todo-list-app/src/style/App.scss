@@ -40,6 +40,11 @@
   @include flex-setting(column, center, center);
   border-radius: 12px;
   border: none;
+  cursor: pointer;
+  transition: .2s;
+  &:hover{
+    transform: scale(1.06);
+  }
 }
 
 $default-box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 12px;
@@ -66,12 +71,53 @@ body{
   @include flex-setting(column, center, center);
 }
 
+.todo__check {
+  display: none;
+}
+.todo__check:checked + label{
+  background-color: $indigo;
+  opacity: .7;
+  color: #ffffff;
+  i{
+    display: block;
+    font-size: 14px;
+  }
+}
+.todo__check + label {
+  @include default-btn();
+  cursor: pointer;
+  border: .5px solid rgba(0, 0, 0, 0.25);
+  margin-right: 16px;
+  background-color: #ffffff;
+  i{
+    display: none;
+  }
+}
+
+.todo__delete{
+  @include default-btn();
+  cursor: pointer;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.todo-count{
+  @include default-box();
+  @include flex-setting(row, null, null);
+  margin-top: 16px;
+  height: 10px;
+  border-radius: 5px 5px 0 0;
+  overflow: hidden;
+  &__completed{
+    @include default-gradient();
+  }
+}
 
 header{
   @include default-box();
   @include flex-setting(null, null, null);
   padding: 10px 20px;
-  border-radius: 5px 5px 0 0 ;
+  border-radius: 0;
   div{
     font-size: 28px;
     font-weight: 700;
@@ -107,46 +153,55 @@ form{
   }
 }
 
+.todo-control{
+  @include default-box();
+  border-radius: 5px 5px 0 0;
+  margin-top: 16px;
+  padding: 15px 20px;
+  @include flex-setting(row, null, space-between);
+  div{
+    position: relative;
+    @include flex-setting(row, center, null);
+    span{
+      font-size: 16px;
+      font-weight: 700;
+      width: max-content;
+      color: #3731414c;
+      display: none;
+    }
+    .todo__check{
+      &:hover + label + span{
+        @include position-setting(absolute, 0, 40px, 0, null);
+        @include flex-setting(column, center, center);
+      }
+    }
+    .todo__delete{
+      &:hover + span{
+        @include position-setting(absolute, 0, null, 0, 40px);
+        @include flex-setting(column, center, center);
+      }
+    }
+  }
+  button {
+    margin-left: 16px;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
 .todo-list{
   @include default-box();
-  padding: 0;
-  margin-top: 16px;
+  border-radius: 0 0 5px 5px;
   ul{
     list-style: none;
     padding: 0;
+    margin: 0;
     li{
-      position: relative;
+      position: relative;   
       @include flex-setting(row, center, flex-start);
-      padding: 10px 20px;
+      padding: 15px 20px;
       font-weight: 600;
-      input {
-        display: none;
-      }
-      input:checked + label{
-        background-color: $indigo;
-        opacity: .7;
-        color: #ffffff;
-        i{
-          display: block;
-          font-size: 14px;
-        }
-      }
-      label {
-        @include default-btn();
-        cursor: pointer;
-        border: .5px solid rgba(0, 0, 0, 0.25);
-        margin-right: 16px;
-        background-color: #ffffff;
-        i{
-          display: none;
-        }
-      }
-      button {
+      button{
         @include position-setting(absolute, null, null, null, 20px);
-        @include default-btn();
-        cursor: pointer;
-        color: white;
-        background-color: rgba(0, 0, 0, 0.1);
       }
       span{
         font-size: 20px;
@@ -161,6 +216,9 @@ form{
         button {
           background-color: rgba(0, 0, 0, 0.3);
         }
+      }
+      &:last-child{
+        padding-bottom: 20px;
       }
     }
   }

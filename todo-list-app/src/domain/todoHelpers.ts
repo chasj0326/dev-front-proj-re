@@ -12,6 +12,12 @@ interface Remove {
 interface Count {
   (todos: Todo[]): TodoCountData;
 }
+interface Check {
+  (todos: Todo[]): boolean;
+}
+interface ToggleAll {
+  (todos: Todo[]): Todo[];
+}
 
 const add: Add = (text, todos) => [
   ...todos,
@@ -38,9 +44,28 @@ const count: Count = todos => ({
     .length,
 });
 
+const isAllChecked: Check = todos => {
+  return todos.every(todo => todo.completed);
+};
+
+const toggleAll: ToggleAll = todos => {
+  if (isAllChecked(todos)) {
+    return todos.map(todo => ({
+      ...todo,
+      completed: false,
+    }));
+  }
+  return todos.map(todo => ({
+    ...todo,
+    completed: true,
+  }));
+};
+
 export default {
   add,
   toggle,
   remove,
   count,
+  isAllChecked,
+  toggleAll,
 };

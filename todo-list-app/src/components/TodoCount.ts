@@ -7,9 +7,20 @@ export default class TodoCount extends Component<
 > {
   render(): void {
     const { totalCount, completedCount } = this.state;
-    this.$element.innerHTML = `
-      <div>Total: ${totalCount}</div>
-      <div>Completed: ${completedCount}</div>
-    `;
+    if (totalCount === 0) {
+      this.$element.style.display = "none";
+    } else {
+      this.$element.style.display = "flex";
+      this.$element.innerHTML = `
+        <div 
+          class="todo-count__completed"
+          style="flex-grow: ${completedCount}">
+        </div>
+        <div 
+          class="todo-count__uncompleted"
+          style="flex-grow: ${totalCount - completedCount}">
+        </div>
+      `;
+    }
   }
 }

@@ -7,6 +7,7 @@ import {
 import { _todo, todoStorage } from "./domain";
 import { Todo } from "./types/main";
 import { createDOMElement } from "./service";
+import TodoControl from "./components/TodoControl";
 
 interface Props {
   $app: HTMLElement;
@@ -15,12 +16,22 @@ interface Props {
 export default class App {
   private $app;
   private state: Todo[];
+  private todoControl: TodoControl;
   private todoList: TodoList;
   private todoCount: TodoCount;
 
   constructor({ $app }: Props) {
     this.$app = $app;
     this.state = todoStorage.getItem();
+
+    this.todoCount = new TodoCount({
+      initialState: _todo.count(this.state),
+      $parent: this.$app,
+      $element: createDOMElement("div", {
+        class: "todo-count",
+      }),
+      events: {},
+    });
 
     new Header({
       initialState: {
@@ -40,6 +51,18 @@ export default class App {
       },
     });
 
+    this.todoControl = new TodoControl({
+      initialState: this.state,
+      $parent: this.$app,
+      $element: createDOMElement("div", {
+        class: "todo-control",
+      }),
+      events: {
+        onToggleAll: () => this.handleToggleAll(),
+        onDeleteAll: () => this.handleDeleteAll(),
+      },
+    });
+
     this.todoList = new TodoList({
       initialState: this.state,
       $parent: this.$app,
@@ -51,20 +74,12 @@ export default class App {
         onDelete: id => this.handleDelete(id),
       },
     });
-
-    this.todoCount = new TodoCount({
-      initialState: _todo.count(this.state),
-      $parent: this.$app,
-      $element: createDOMElement("div", {
-        class: "todo-count",
-      }),
-      events: {},
-    });
   }
 
   setState(nextState: Todo[]) {
     this.state = nextState;
     todoStorage.setItem(this.state);
+    this.todoControl.setState(this.state);
     this.todoList.setState(this.state);
     this.todoCount.setState(_todo.count(this.state));
   }
@@ -77,5 +92,11 @@ export default class App {
   }
   private handleDelete(id: string) {
     this.setState(_todo.remove(id, this.state));
+  }
+  private handleToggleAll() {
+    this.setState(_todo.toggleAll(this.state));
+  }
+  private handleDeleteAll() {
+    this.setState([]);
   }
 }
