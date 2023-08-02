@@ -4,7 +4,8 @@ import { _todo } from "../domain";
 
 interface Events {
   onToggleAll: () => void;
-  onDeleteAll: () => void;
+  onRemoveAll: () => void;
+  onRemoveCompleted: () => void;
 }
 
 export default class TodoControl extends Component<
@@ -26,7 +27,12 @@ export default class TodoControl extends Component<
         </label>
         <span>check/uncheck all</span>
       </div>
-      <div>
+      <div class="delete-btn-group">
+        <button type="button" class="todo__delete--completed">
+          <i class="fa-solid fa-minus"></i>
+        </button>
+        <span>delete completed</span>
+        
         <button type="button" class="todo__delete">
           <i class="fa-solid fa-trash-can"></i>
         </button>
@@ -42,10 +48,16 @@ export default class TodoControl extends Component<
       if (target.tagName === "INPUT") {
         this.events.onToggleAll();
       } else if (
-        target.tagName === "BUTTON" ||
-        target.parentElement?.tagName === "BUTTON"
+        target.className === "todo__delete" ||
+        target.parentElement?.className === "todo__delete"
       ) {
-        this.events.onDeleteAll();
+        this.events.onRemoveAll();
+      } else if (
+        target.className === "todo__delete--completed" ||
+        target.parentElement?.className ===
+          "todo__delete--completed"
+      ) {
+        this.events.onRemoveCompleted();
       }
     });
   }

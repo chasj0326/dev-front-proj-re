@@ -15,7 +15,7 @@ interface Count {
 interface Check {
   (todos: Todo[]): boolean;
 }
-interface ToggleAll {
+interface All {
   (todos: Todo[]): Todo[];
 }
 
@@ -25,6 +25,7 @@ const add: Add = (text, todos) => [
     text,
     completed: false,
     id: `${Date.now()}${Math.random()}`,
+    editing: false,
   },
 ];
 
@@ -32,6 +33,13 @@ const toggle: Toggle = (id, todos) =>
   todos.map(todo =>
     todo.id === id
       ? { ...todo, completed: !todo.completed }
+      : todo
+  );
+
+const edit: Toggle = (id, todos) =>
+  todos.map(todo =>
+    todo.id === id
+      ? { ...todo, editing: !todo.editing }
       : todo
   );
 
@@ -48,7 +56,7 @@ const isAllChecked: Check = todos => {
   return todos.every(todo => todo.completed);
 };
 
-const toggleAll: ToggleAll = todos => {
+const toggleAll: All = todos => {
   if (isAllChecked(todos)) {
     return todos.map(todo => ({
       ...todo,
@@ -61,11 +69,16 @@ const toggleAll: ToggleAll = todos => {
   }));
 };
 
+const removeCompleted: All = todos =>
+  todos.filter(todo => !todo.completed);
+
 export default {
   add,
   toggle,
+  edit,
   remove,
   count,
   isAllChecked,
   toggleAll,
+  removeCompleted,
 };

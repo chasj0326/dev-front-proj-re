@@ -38,6 +38,8 @@
 @mixin default-btn(){
   @include size-setting(24px, 24px);
   @include flex-setting(column, center, center);
+  color: white;
+  background-color: rgba(0,0,0,0.36);
   border-radius: 12px;
   border: none;
   cursor: pointer;
@@ -94,11 +96,10 @@ body{
   }
 }
 
-.todo__delete{
+.todo__delete,
+.todo__delete--completed{
   @include default-btn();
   cursor: pointer;
-  color: white;
-  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .todo-count{
@@ -175,16 +176,24 @@ form{
         @include flex-setting(column, center, center);
       }
     }
-    .todo__delete{
-      &:hover + span{
-        @include position-setting(absolute, 0, null, 0, 40px);
-        @include flex-setting(column, center, center);
+    &.delete-btn-group{
+      .todo__delete,
+      .todo__delete--completed{
+        &:hover + span{
+          @include position-setting(absolute, 0, null, 0, 80px);
+          @include flex-setting(column, center, center);
+        }
       }
     }
   }
   button {
-    margin-left: 16px;
-    background-color: rgba(0, 0, 0, 0.3);
+    margin-left: 12px;
+    &.todo__delete--completed{
+      background-color: $pink;
+    }
+    &.todo__delete{
+      background-color: $indigo;
+    }
   }
 }
 
@@ -200,13 +209,26 @@ form{
       @include flex-setting(row, center, flex-start);
       padding: 15px 20px;
       font-weight: 600;
-      button{
+      .btn-group{
+        @include flex-setting(row, center, flex-end);
         @include position-setting(absolute, null, null, null, 20px);
+        button{
+          opacity: 0;
+          &:hover{
+            opacity: 1;
+          }
+        }
+        .todo__edit{
+          @include default-btn();
+          margin-right: 12px;
+          color: #ffffff;
+        }
       }
       span{
         font-size: 20px;
         color: #373141;
         cursor: pointer;
+        width: 50%;
         &.completed{
           opacity: .3;
         }
@@ -214,7 +236,7 @@ form{
       &:hover{
         background-color: #37314111;
         button {
-          background-color: rgba(0, 0, 0, 0.3);
+          opacity: .6;
         }
       }
       &:last-child{

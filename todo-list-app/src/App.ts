@@ -59,7 +59,9 @@ export default class App {
       }),
       events: {
         onToggleAll: () => this.handleToggleAll(),
-        onDeleteAll: () => this.handleDeleteAll(),
+        onRemoveAll: () => this.handleRemoveAll(),
+        onRemoveCompleted: () =>
+          this.handleRemoveCompleted(),
       },
     });
 
@@ -71,7 +73,8 @@ export default class App {
       }),
       events: {
         onToggle: id => this.handleToggle(id),
-        onDelete: id => this.handleDelete(id),
+        onRemove: id => this.handleRemove(id),
+        onEdit: id => this.handleEdit(id),
       },
     });
   }
@@ -90,13 +93,19 @@ export default class App {
   private handleToggle(id: string) {
     this.setState(_todo.toggle(id, this.state));
   }
-  private handleDelete(id: string) {
+  private handleRemove(id: string) {
     this.setState(_todo.remove(id, this.state));
+  }
+  private handleEdit(id: string) {
+    this.setState(_todo.edit(id, this.state));
   }
   private handleToggleAll() {
     this.setState(_todo.toggleAll(this.state));
   }
-  private handleDeleteAll() {
+  private handleRemoveAll() {
     this.setState([]);
+  }
+  private handleRemoveCompleted() {
+    this.setState(_todo.removeCompleted(this.state));
   }
 }

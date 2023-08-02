@@ -4,7 +4,8 @@ import { _todo } from "../domain";
 
 interface Events {
   onToggle: (id: string) => void;
-  onDelete: (id: string) => void;
+  onRemove: (id: string) => void;
+  onEdit: (id: string) => void;
 }
 
 export default class TodoList extends Component<
@@ -27,9 +28,14 @@ export default class TodoList extends Component<
             <span class="${
               todo.completed ? "completed" : ""
             }">${todo.text}</span>
-            <button type="button" class="todo__delete">
-              <i class="fa-solid fa-trash"></i>
-            </button>
+            <div class="btn-group">
+              <button type="button" class="todo__edit">
+                <i class="fa-solid fa-pen"></i>
+              </button>
+              <button type="button" class="todo__delete">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
           </li>
         `
         )
@@ -51,10 +57,15 @@ export default class TodoList extends Component<
       ) {
         this.events.onToggle(id);
       } else if (
-        target.tagName === "BUTTON" ||
-        target.parentElement?.tagName === "BUTTON"
+        target.className === "todo__delete" ||
+        target.parentElement?.className === "todo__delete"
       ) {
-        this.events.onDelete(id);
+        this.events.onRemove(id);
+      } else if (
+        target.className === "todo__edit" ||
+        target.parentElement?.className === "todo__edit"
+      ) {
+        this.events.onEdit(id);
       }
     });
   }
