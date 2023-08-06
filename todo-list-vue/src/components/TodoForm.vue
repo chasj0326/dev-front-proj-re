@@ -1,17 +1,18 @@
 <template>
-  <form @submit.prevent="$emit('addTodo', text); this.text=''">
-    <input v-model="text">
+  <form @submit.prevent="submit">
+    <input ref="input">
     <button type="submit">add Todo!</button>
   </form>
 </template>
 
 <script>
 export default{
-  data() {
-    return {
-      text: ''
+  methods: {
+    submit(){
+      this.$store.commit('todolist/createTodo', this.$refs.input.value);
+      this.$store.dispatch('todolist/storeTodos');
+      this.$refs.input.value = '';
     }
-  },
-  emits: ["addTodo"]
+  }
 }
 </script>
